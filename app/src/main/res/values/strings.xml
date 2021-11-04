@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">MiColeccionDeVinos</string>
+    <string name="btAdd">Add</string>
+    <string name="btEdit">Edit</string>
+    <string name="hintEditIdVino">IdVino</string>
+    <string name="tvId">Id:</string>
+    <string name="hintIdVino">Id del vino</string>
+    <string name="tvNombre">Nombre:</string>
+    <string name="hintNombreVino">Nombre del vino</string>
+    <string name="tvBodega">Bodega:</string>
+    <string name="hintBodegaVino">Bodega del vino</string>
+    <string name="tvColor">Color:</string>
+    <string name="hintColorVino">Color del vino</string>
+    <string name="tvOrigen">Origen:</string>
+    <string name="hintOrigenVino">Origen del vino</string>
+    <string name="hintGraduacionVino">Graduación del vino</string>
+    <string name="tvGraduacion">Graduación:</string>
+    <string name="tvFecha">Fecha:</string>
+    <string name="hintFechaVino">Fecha del vino</string>
+    <string name="btDelete">Delete</string>
+</resources>
