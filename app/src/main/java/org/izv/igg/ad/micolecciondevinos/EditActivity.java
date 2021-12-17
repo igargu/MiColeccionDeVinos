@@ -1,7 +1,8 @@
 package org.izv.igg.ad.micolecciondevinos;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,13 +37,35 @@ public class EditActivity extends AppCompatActivity {
     private String[] arrayVino;
 
     private String[] arrayVinos;
-    private String[] arrayIdVinos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
         initialize();
+    }
+
+    private void defineDeleteListener() {
+        Button btDelete = findViewById(R.id.btDelete);
+        btDelete.setOnClickListener((View v) -> {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.alertDialogDelete_title)
+                    .setMessage(R.string.alertDialogDelete_message)
+                    .setPositiveButton(R.string.alertDialogDelete_confirm, (dialog, which) -> {
+                        deleteVino();
+                    })
+                    .setNegativeButton(R.string.alertDialogDelete_cancel, (dialog, which) -> {
+                        dialog.cancel();
+                    })
+                    .show();
+        });
+    }
+
+    private void defineEditListener() {
+        Button btEdit = findViewById(R.id.btEdit);
+        btEdit.setOnClickListener((View v) -> {
+            editVino();
+        });
     }
 
     private void deleteVino() {
@@ -52,8 +75,8 @@ public class EditActivity extends AppCompatActivity {
         int posicionSaltoLinea = posicion + 1;
 
         for (int i = 0; i < arrayVinos.length; i++) {
-            if (i != posicion){
-                if (i != posicionSaltoLinea){
+            if (i != posicion) {
+                if (i != posicionSaltoLinea) {
                     csv += arrayVinos[i] + "\n";
                 }
             }
@@ -62,7 +85,7 @@ public class EditActivity extends AppCompatActivity {
         deleteFile(getFilesDir(), fileName);
         writeFile(getFilesDir(), fileName, csv);
 
-        if (arrayVinos.length == 1){
+        if (arrayVinos.length == 1) {
             deleteFile(getFilesDir(), fileName);
             File f = new File(getFilesDir(), fileName);
             try {
@@ -75,7 +98,6 @@ public class EditActivity extends AppCompatActivity {
 
         System.out.println(csv);
         finish();
-        openMainActivity();
     }
 
     private void editVino() {
@@ -117,7 +139,6 @@ public class EditActivity extends AppCompatActivity {
         writeFile(getFilesDir(), fileName, csv);
         System.out.println(csv);
         finish();
-        openMainActivity();
     }
 
     private void initialize() {
@@ -150,18 +171,11 @@ public class EditActivity extends AppCompatActivity {
         etGraduacion.setText(arrayVino[5]);
         etFecha.setText(arrayVino[6]);
 
-        Button btEdit = findViewById(R.id.btEdit);
-        btEdit.setOnClickListener((View v) -> {
-            editVino();
-        });
-
-        Button btDelete = findViewById(R.id.btDelete);
-        btDelete.setOnClickListener((View v) -> {
-            deleteVino();
-        });
+        defineEditListener();
+        defineDeleteListener();
     }
 
-    private boolean deleteFile(File file, String fileName){
+    private boolean deleteFile(File file, String fileName) {
         File f = new File(file, fileName);
         FileWriter fw = null; // FileWriter(File f,boolean append)
         boolean ok = true;
@@ -169,22 +183,17 @@ public class EditActivity extends AppCompatActivity {
         return ok;
     }
 
-    private void openMainActivity() {
-        Intent intencion = new Intent(this, MainActivity.class);
-        startActivity(intencion);
-    }
-
-    private String readFile(File file, String fileName){
+    private String readFile(File file, String fileName) {
         File f = new File(file, fileName);
         String texto = "";
         try {
             BufferedReader br = new BufferedReader(new FileReader(f));
             String linea;
-            while((linea = br.readLine()) != null) {
+            while ((linea = br.readLine()) != null) {
                 texto += linea + "\n";
             }
             br.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             texto = null;
             Log.v(TAG, e.toString());
         }

@@ -49,40 +49,22 @@ public class MainActivity extends AppCompatActivity {
         initialize();
     }
 
-    private void initialize() {
-
-        fileName = "coleccionVinos.txt";
-
-        File f = new File(getFilesDir(), fileName);
-        try {
-            FileWriter fw = new FileWriter(f, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        // Leemos el txt
-        listaVinos = readFile(getFilesDir(), fileName);
-
-        // Separamos los Vinos por cada \n
-        arrayVinos = listaVinos.split("\n");
-
+    protected void onResume() {
+        super.onResume();
         TextView tvListaVinos = findViewById(R.id.tvListaVinos);
+        tvListaVinos.setText("");
+        initialize();
+    }
 
-        if (readFile(getFilesDir(), fileName).isEmpty()) {
-            System.out.println("El fichero está vacío");
-            tvListaVinos.setText("No hay ningún vino en tu colección");
-        } else {
-            System.out.println("El fichero tiene algun vino");
-            tvListaVinos.setText(listaVinos.replace(";", "\t"));
-        }
-
+    private void defineAddListener() {
         Button btAdd = findViewById(R.id.btAddMain);
         btAdd.setOnClickListener((View v) -> {
             openAddActivity();
         });
+    }
 
+    private void defineEditListener() {
         EditText etIdVino = findViewById(R.id.etIdVino);
-
         Button btEdit = findViewById(R.id.btEditMain);
         btEdit.setOnClickListener((View v) -> {
             idExiste = false;
@@ -119,6 +101,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void initialize() {
+
+        System.out.println("SE HA INICIADO EL MAIN");
+        fileName = "coleccionVinos.txt";
+
+        // Leemos el txt
+        listaVinos = readFile(getFilesDir(), fileName);
+
+        // Separamos los Vinos por cada \n
+        arrayVinos = listaVinos.split("\n");
+
+        isEmptyMyCollection();
+        defineAddListener();
+        defineEditListener();
+    }
+
+    private void isEmptyMyCollection() {
+        TextView tvListaVinos = findViewById(R.id.tvListaVinos);
+
+        if (readFile(getFilesDir(), fileName).isEmpty()) {
+            System.out.println("VACIO");
+            tvListaVinos.setText("No hay ningún vino en tu colección");
+        } else {
+            System.out.println("LLENO");
+            tvListaVinos.setText(listaVinos.replace(";", "\t"));
+        }
+    }
+
     private void openAddActivity() {
         Intent intencion = new Intent(this, AddActivity.class);
         startActivity(intencion);
@@ -129,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intencion);
     }
 
-    private boolean deleteFile(File file, String fileName){
+    private boolean deleteFile(File file, String fileName) {
         File f = new File(file, fileName);
         FileWriter fw = null; // FileWriter(File f,boolean append)
         boolean ok = true;

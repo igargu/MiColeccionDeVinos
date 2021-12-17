@@ -27,8 +27,6 @@ public class AddActivity extends AppCompatActivity {
     private static final String TAG = "xyzyzx";
 
     private Context context;
-    //private ArrayList<String> listaVinos = new ArrayList<>();
-    //private Vinos vinos = new Vinos(listaVinos);
 
     private String fileName;
     private String listaVinos;
@@ -67,24 +65,31 @@ public class AddActivity extends AppCompatActivity {
         EditText etFecha = findViewById(R.id.etFecha);
         Integer fechaVino = Integer.parseInt(etFecha.getText().toString());
 
-            for (int i = 0; i < arrayVinos.length; i++) {
-                arrayIdVinos = arrayVinos[i].split(";");
-                if (etId.getText().toString().equals(arrayIdVinos[0])) {
-                    idExiste = true;
-                    System.out.println("El Id introducido ya existe");
-                    Toast.makeText(context, "El Id introducido ya existe", Toast.LENGTH_SHORT).show();
-                    i = arrayVinos.length;
-                }
+        for (int i = 0; i < arrayVinos.length; i++) {
+            arrayIdVinos = arrayVinos[i].split(";");
+            if (etId.getText().toString().equals(arrayIdVinos[0])) {
+                idExiste = true;
+                System.out.println("El Id introducido ya existe");
+                Toast.makeText(context, "El Id introducido ya existe", Toast.LENGTH_SHORT).show();
+                i = arrayVinos.length;
             }
-            if (idExiste == false) {
-                Vino vino = new Vino(idVino, nombreVino, bodegaVino, colorVino, origenVino, graduacionVino, fechaVino);
-                String csv = Csv.getCsv(vino);
-                writeFile(getFilesDir(), fileName, csv);
-                System.out.println(csv);
-                finish();
-                openMainActivity();
-            }
+        }
+        if (idExiste == false) {
+            Vino vino = new Vino(idVino, nombreVino, bodegaVino, colorVino, origenVino, graduacionVino, fechaVino);
+            String csv = Csv.getCsv(vino);
+            writeFile(getFilesDir(), fileName, csv);
+            System.out.println(csv);
+            finish();
+        }
 
+    }
+
+    private void defineAddListener() {
+        Button btAdd = findViewById(R.id.btAdd);
+        btAdd.setOnClickListener((View v) -> {
+            idExiste = false;
+            addVino();
+        });
     }
 
     private void initialize() {
@@ -96,16 +101,7 @@ public class AddActivity extends AppCompatActivity {
         // Separamos los Vinos por cada \n
         arrayVinos = listaVinos.split("\n");
 
-        Button btAdd = findViewById(R.id.btAdd);
-        btAdd.setOnClickListener((View v) -> {
-            idExiste = false;
-            addVino();
-        });
-    }
-
-    private void openMainActivity() {
-        Intent intencion = new Intent(this, MainActivity.class);
-        startActivity(intencion);
+        defineAddListener();
     }
 
     private String readFile(File file, String fileName){

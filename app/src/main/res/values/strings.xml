@@ -18,4 +18,8 @@
     <string name="tvFecha">Fecha:</string>
     <string name="hintFechaVino">Fecha del vino</string>
     <string name="btDelete">Delete</string>
+    <string name="alertDialogDelete_title">Borrar vino</string>
+    <string name="alertDialogDelete_message">¿Desea borrar este vino?</string>
+    <string name="alertDialogDelete_confirm">Aceptar</string>
+    <string name="alertDialogDelete_cancel">Cancelar</string>
 </resources>
